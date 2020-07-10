@@ -29,3 +29,4 @@ Collate:
     'analyze.R'
     'visualize.R'
     'iccetree.R'
+LazyData: true

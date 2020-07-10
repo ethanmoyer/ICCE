@@ -30,7 +30,7 @@ BiocManager::install('ethanmoyer/icceData')
 
 The ICCE data package contains a small reference file that can be obtained through:
 ```{r eval=FALSE, message = FALSE, warning = FALSE}
-ref_file <- system.file("extdata/reference.rds", package = "sesameData")
+ref_file <- system.file("extdata/reference.rds", package = "icceData")
 reference <- get_reference(ref_file)
 ```
 
