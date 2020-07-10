@@ -1,24 +1,15 @@
----
-title: "ICCE User Guide"
-shorttitle: "sesame guide"
-package: sesame
-output: rmarkdown::html_vignette
-fig_width: 8
-fig_height: 6
-vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{"0. SeSAMe User Guide"}
-  %\VignetteEncoding{UTF-8}
----
+# ICCE - Iterative Construction of Cyto-epigenetic Evolution
 
-```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-#library(icce)
-options(rmarkdown.html_vignette.check_title = FALSE)
+To install from github,
+```R
+install.packages("BiocManager")
+library(BiocManager)
+install("ethanmoyer/icce")
 ```
 
 ICCE can process Illumina Infinium DNA methylation data. It currently only supports the EPIC Platform. 
 
-# Install ICCE
+## Install ICCE
 
 Development version can be installed from github
 ```{r, eval=FALSE}
@@ -26,7 +17,7 @@ BiocManager::install('ethanmoyer/icce')
 BiocManager::install('ethanmoyer/icceData')
 ```
 
-# Creating consensus vectors with the ICE Pipeline
+## Creating consensus vectors with the ICE Pipeline
 
 The ICCE data package contains a small reference file that can be obtained through:
 ```{r eval=FALSE, message = FALSE, warning = FALSE}
@@ -53,7 +44,7 @@ series_matrix_file <-  system.file("extdata/series_matrix.rds", package = "sesam
 consensus_vector <- betas_to_consensus_vector(reference, series_matrix_file, betas, consensus_vector_names)
 ```
 
-## Why are certain probes removed?
+### Why are certain probes removed?
 
 The openSesame pipeline sometimes replaces beta values with NA because of certain probe masking in the pipeline. These are masked because of their low quality during the Illumina assay. 
 
@@ -61,7 +52,7 @@ Before the consensus vectors are built for each of the specified groups, the bet
 
 In addition to these parameters, certain probes exhibit zero parsimony. Including them in tree reconstruction would be redundant as they do not add to the tree topology. Therefore, they are also removed.
 
-# Reconstructing a tree using the ICCE Pipeline
+## Reconstructing a tree using the ICCE Pipeline
 
 A tree can be constructed using the UPGMA algorithm with the following:
 ```{r eval=FALSE, message = FALSE, warning = FALSE}
@@ -78,15 +69,15 @@ Using the consensus vectors, the internal states of the tree can be reconstructe
 icceTree <- build_icceTree(consensus_vector, tree)
 ```
 
-## How are internal states reconstructed?
+### How are internal states reconstructed?
 
 Using a recursive implementation of Fitch's algorithm, all of the internal states are inferred based off of the nodes of the tree and assigned as either a single state (methylated or unmethylated) or as an ambiguous state (methylated and unmethylated). In a second pass, those internal ambiguous states are resolved by inheriting parental unambiguous states to children.
 
-## What is the structure of an icceTree object?
+### What is the structure of an icceTree object?
 
 An icceTree object is composed of three different structures. The first structure is a n probe by m node data frame (prone-node matrix) that houses the methylation states of all of the nodes on the tree across all probes. A methylated status is assigned 1, unmethylated is 0, and ambiguous is 0.5. The second structure is also a data frame of the same size. This probe-node matrix houses p-values for each of the nodes across all probes. These are used for iterative reconstruction of the cellular tree when more and more data is added. the third structure is a phylogenetic tree structure from ape. 
 
-# Editing a tree using the ICCE package
+## Editing a tree using the ICCE package
 
 Data can be added to either one of the two probe-node matrices through:
 ```{r eval=FALSE, message = FALSE, warning = FALSE}
@@ -130,7 +121,7 @@ icceTree <- remove_branches_from_node(icceTree, node=8)
 ```
 where the 8th node will become a new leaf and all of its descendants will be removed from the tree structure. Descendants are also automatically removed from both the methyl probe-node matrix and the p-value probe-node matrix.
 
-# Analyzing the reconstructed tree using ICCE pipeline
+## Analyzing the reconstructed tree using ICCE pipeline
 
 Differentially methylated probes on each branch can be obtained using:
 ```{r eval=FALSE, message = FALSE, warning = FALSE}
@@ -159,7 +150,7 @@ thermo_prop_internal_nodes = gene_information$thermo_prop_internal_nodes
 thermo_prop_leaves = gene_information$thermo_prop_leaves
 ```
 
-# Visualizing trees using the ICCE package
+## Visualizing trees using the ICCE package
 
 A reconstructed tree can be visualized with the following command:
 ```{r eval=FALSE, message = FALSE, warning = FALSE}
