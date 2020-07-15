@@ -2,7 +2,7 @@
 % Please edit documentation in R/reconstructTree.R
 \name{inherit_parental_state}
 \alias{inherit_parental_state}
-\title{Inherit parental states to ambiguous nodes {VALIDATED}}
+\title{Inherit parental states to ambiguous nodes}
 \usage{
 inherit_parental_state(root, node_matrix, i)
 }
@@ -22,5 +22,4 @@ parental states to ambiguous children nodes
 }
 \examples{
 inherit_parental_state(get_root(tree), node_matrix, 1)
-... some visualization 
 }

@@ -2,20 +2,19 @@
 % Please edit documentation in R/editTree.R
 \name{get_leaves}
 \alias{get_leaves}
-\title{Leaves of a tree}
+\title{Get the leaves of a tree}
 \usage{
-get_leaves(tree)
+get_leaves(icceTree)
 }
 \arguments{
-\item{tree}{ape::phylo tree}
+\item{icceTree}{icceTree data structure}
 }
 \value{
-leafs on a given tree
+a list of nodes representing the leaves of the tree
 }
 \description{
-Given a tree, this function returns the leaves
+Given a tree, this function returns its leaves.
 }
 \examples{
-leaves <- get_leaves(tree)
-... some visualization 
+leaves <- get_leaves(icceTree)
 }

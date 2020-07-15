@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocessData.R
 \name{remove_zero_parsimony_probes}
 \alias{remove_zero_parsimony_probes}
-\title{Removes zero parsimony probes {VALIDATED}}
+\title{Removes zero parsimony probes}
 \usage{
 remove_zero_parsimony_probes(consensus_vector)
 }
@@ -14,7 +14,7 @@ names}
 consensus vector without zero parsimony probes
 }
 \description{
-Selects and removes zero parsimony probes from consensus vectors
+Returns consensus vector with zero parsimony probes removed
 }
 \examples{
 consensus_vector <- remove_zero_parsimony_probes(consensus_vector)

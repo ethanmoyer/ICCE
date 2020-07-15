@@ -2,7 +2,7 @@
 % Please edit documentation in R/reconstructTree.R
 \name{initialize_probe_node_matrix}
 \alias{initialize_probe_node_matrix}
-\title{Initialize the probe-node matrix {VALIDATED}}
+\title{Initialize the probe-node matrix}
 \usage{
 initialize_probe_node_matrix(consensus_vector, tree)
 }
@@ -22,5 +22,4 @@ probes with zeros.
 \examples{
 probe_node_matrix <- initialize_probe_node_matrix(consensus_vector, 
 upgma_tree(consensus_vector))
-... some visualization 
 }

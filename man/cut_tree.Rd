@@ -2,7 +2,8 @@
 % Please edit documentation in R/editTree.R
 \name{cut_tree}
 \alias{cut_tree}
-\title{Recursively walk through tree and remove descendants.}
+\title{Recursively walk through a tree and structure remove descendants of given 
+node.}
 \usage{
 cut_tree(node, root, node_matrix, i)
 }
@@ -11,18 +12,17 @@ cut_tree(node, root, node_matrix, i)
 
 \item{root}{root of non-proper subtree}
 
-\item{node_matrix}{matrix obtained from create_node_matrix function}
+\item{node_matrix}{node matrix obtained from create_node_matrix function}
 
-\item{i}{row in node matrix, start at 1}
+\item{i}{row in node matrix, starting at 1}
 }
 \value{
 None
 }
 \description{
 This function will recursively walk through a given tree and remove all of 
-node n's descendants, making node n a new leaf.
+the descendants of a given node, making the given node a new leaf.
 }
 \examples{
 cut_tree(node, get_root(tree), node_matrix, 1)
-... some visualization 
 }

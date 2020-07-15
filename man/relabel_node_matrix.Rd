@@ -4,24 +4,26 @@
 \alias{relabel_node_matrix}
 \title{Relabel node in probe-node matrix}
 \usage{
-relabel_node_matrix(probe_node_matrix, n_old, n_new)
+relabel_node_matrix(icceTree, n_old, n_new, matrix = 2)
 }
 \arguments{
-\item{probe_node_matrix}{matrix storing the methylation status across all
-probes and nodes on a tree}
+\item{icceTree}{icceTree data structure}
 
 \item{n_old}{node number}
 
 \item{n_new}{node number}
+
+\item{matrix}{numerical value indicating which probe-node matrix
+to add data to (0 == methyl states, 1 == p-values)}
 }
 \value{
 relabeled probe_node_matrix with node label n_old with node label
 n_new
 }
 \description{
-Relabel node label n_old with node label n_new in probe-node matrix.
+Relabel node label n_old with node label n_new in either probe-node matrix 
+(depending on the matrix parameter).
 }
 \examples{
-probe_node_matrix <- relabel_node_matrix(probe_node_matrix, 7, 10)
-... some visualization 
+probe_node_matrix <- relabel_node_matrix(icceTree, 7, 15, matrix=2)
 }

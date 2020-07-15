@@ -2,20 +2,19 @@
 % Please edit documentation in R/editTree.R
 \name{get_root}
 \alias{get_root}
-\title{Root of a tree {VALIDATED}}
+\title{Get root of a tree}
 \usage{
-get_root(tree)
+get_root(icceTree)
 }
 \arguments{
-\item{tree}{ape::phylo tree}
+\item{icceTree}{icceTree data structure}
 }
 \value{
 node corresponding the the root of the tree
 }
 \description{
-Returns the root of a tree structure.
+Returns the root of a given tree structure.
 }
 \examples{
-root <- get_root(tree)
-... some visualization 
+root <- get_root(icceTree)
 }

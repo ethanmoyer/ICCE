@@ -28,5 +28,5 @@ Collate:
     'preprocessData.R'
     'analyze.R'
     'visualize.R'
-    'iccetree.R'
+    'icceTree.R'
 LazyData: true

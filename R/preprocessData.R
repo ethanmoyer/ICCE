@@ -124,6 +124,110 @@ fit_betas_to_distribution <- function(betas, bi) {
 	return(betas)
 }
 
+#' Work on this...
+#'
+#' Given...
+#' 
+#' @param x data structure
+#' @param mu0 name of variable/file
+#' @param mu1 directory to which the data should be saved
+#' @param nsamples number of cell types
+#'
+#' @return None
+#' @examples
+#' betas_info = generate_p_values(0.2, .119, .880, .112)
+#' betas_state = betas_info$betas
+#' betas_p = betas_info$betas_p
+#' @export
+generate_p_value <- function(x, mu0=0.1, mu1=0.9, sigma=0.1) {
+	m0_p = pnorm(x, mu0, sigma)
+    m1_p = pnorm(x, mu1, sigma)
+    if ((1 - m0_p) > m1_p) {
+    	return(list(state = 0, p = m0_p))
+    } else {
+    	return(list(state = 1, p = 1 - m1_p))
+    }
+}
+
+#' Categorize betas based on bimodal distribution and return the p-value of 
+#' each categorization.
+#'
+#' This function uses a given bimodal distribution generated within cell types
+#' in order to categorize betas as either methylated (1) or unmethylated (0) 
+#' in the betas structure. It also returns the p-value of each categorization 
+#' in the betas_p structure.
+#' 
+#' @param betas matrix (rows are cell names, columns are probe names)
+#' @param bi matrix specifying mu0, mu1, sigma0, sigma1 across all cell types
+#'
+#' @return betas matrix categorized based on bimodal distribution
+#' @examples
+#' betas <- fit_betas_to_distribution(betas, bi)
+#' @export
+fit_betas_to_distribution_p <- function(betas, bi) {
+	betas_p = betas
+	for(i in 1:nrow(betas)) {
+		for(k in 1:ncol(betas)) {
+			if (is.na(betas[i, k])) next
+			distr = generate_p_value(betas[i, k], bi[i, 1], bi[i ,2], bi[i, 3])
+			betas[i, k] = as.integer(distr$state)
+			betas_p[i, k] = distr$p
+	  	}
+	}
+	return(list(betas = betas, betas_p = betas_p))
+}
+
+
+create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigma=0.1) {
+	consensus_state <- c()
+	consensus_p <- c()
+	# For each cell type
+	for (i in 1:length(group_names)) {
+		name = group_names[i]
+		group_betas = betas[grepl(name, rownames(betas)), ]
+
+		# For each probe
+		for (j in 1:ncol(group_betas)) {
+			if (any(is.na(group_betas[, j]))) {
+				S_state[j] = NA
+				S_p[j] = NA
+				next
+			}
+			
+			prod_0 = 1
+			# Calculating P(B | m = 0)
+			# P(B | m = 0) = (B_1 | m = 0) * ... * (B_N | m = 0)
+			for (k in 1:nrow(group_betas)) {
+				# P(B_i | m = 0) ~ N(.1, .1)
+				prod_0 = prod_0 * (1 - pnorm(group_betas[k, j], mu0, sigma))
+			}
+
+			prod_1 = 1
+			# Calculating P(B | m = 1)
+			# P(B | m = 1) = (B_1 | m = 1) * ... * (B_N | m = 1)
+			for (k in 1:nrow(group_betas)) {
+				# P(B_i | m = 1) ~ N(.9, .1)
+				prod_1 = prod_1 * pnorm(group_betas[k, j], mu1, sigma)
+			}
+			# Add a penalty
+			if (sd(group_betas[, j]) > 0.15) {}
+			# cg00007420
+			# arg max (P(B | m = 0), P(B | m = 1))
+			prob = c(prod_0, prod_1)
+			ind = which.max(prob)
+			S_state[j] = c(0, 1)[ind]
+			# p = 1 - P(B | m = m) / (P(B | m = 0) + P(B | m = 1))
+			S_p[j] = 1 - prob[ind] / (prod_0 + prod_1)
+
+		}
+		consensus_state[[name]] = S_state
+		consensus_p[[name]] = S_p
+	} 
+
+	return(c(consensus_state=consensus_state, consensus_p=consensus_p))
+}
+
+
 #' Create consensus vector of probes for each group
 #'
 #' This function creates consensus vector for each group using majority ruling:
@@ -194,7 +298,7 @@ betas_to_consensus_vector <- function(reference_file, series_matrix_file, betas,
 	save_data(betas, 'betas_selected_cells')
 
 	bi <- generate_bimodal_distribution(betas)
-	save_data(bi, 'bi')
+	save_data(bi, 'bi_distribution')
 
 	betas <- fit_betas_to_distribution(betas, bi)
 	save_data(betas, 'betas_fit_to_distribution')
@@ -315,3 +419,21 @@ save_data <- function(data, variable_name, dir) {
 	data_file = paste(dir, "/", variable_name, '.rds', sep = "")
 	saveRDS(data, file = data_file)
 }
+
+
+generate_p_values_0 <- function(x, mu0, mu1, nsamples=10) {
+	BL <- vapply(
+		c(mu0, mu1),
+		function(mu) {
+			dbinom(
+				round(x*nsamples), 
+				size=nsamples, prob=mu)}, numeric(1))
+
+	ind <- which.max(BL)
+	BT <- c('1', '0')[ind]
+	BS <- floor(-log10(1-BL[ind] / sum(BL)) * 10)
+	list(BT=BT, BL=BL[ind], BS=BS)
+}
+
+
+

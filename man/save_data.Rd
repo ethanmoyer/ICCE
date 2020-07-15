@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocessData.R
 \name{save_data}
 \alias{save_data}
-\title{Saves specified data with variable name to working directory {VALIDATED}}
+\title{Saves specified data with variable name to working directory}
 \usage{
 save_data(data, variable_name, dir)
 }
@@ -22,5 +22,4 @@ this function simply saves data.
 }
 \examples{
 save_data(betas, 'betas', getwd())
-... some visualization 
 }

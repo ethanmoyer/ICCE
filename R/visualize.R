@@ -53,9 +53,10 @@ show_gene_track <- function(filename, tree, gene, thermo_prop_internal_nodes, th
 
 #' Display heatmap of probes {In progress}
 #'
-#' ...
+#' This is in progress
 #'
-#' @param None
+#' @param betas betas
+#' @param reference reference
 #' @return 
 #' @examples
 #' head_map <- show_heatmap()

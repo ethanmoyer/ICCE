@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualize.R
 \name{show_tree}
 \alias{show_tree}
-\title{Display tree {VALIDATED}}
+\title{Display tree}
 \usage{
 show_tree(filename, tree, title, edge_labels)
 }
@@ -22,6 +22,6 @@ None
 Displays constructed tree and saves it at the given filename.
 }
 \examples{
-show_tree('tree.pdf', tree, 'Hematopoietic Tree')
-... some visualization 
+show_tree(filename='tree.pdf', tree=icceTree$tree, title='Hematopoietic Tree', 
+edge_labels=meth_gains_label) 
 }

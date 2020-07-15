@@ -30,10 +30,11 @@ None
 }
 \description{
 Displays constructed tree with node labels for the proportion of each probe 
-state for a selected gene. This is saved at the given filename
+state for a selected gene. This is saved at the given filename.
 }
 \examples{
-show_gene_track('tree_CD81', tree, 'CD81', thermo_prop_internal_nodes, 
+show_gene_track('tree_CD81', tree=icceTree$tree, gene='CD81', 
+thermo_prop_internal_nodes=thermo_prop_internal_nodes, thermo_prop_leaves=
 thermo_prop_leaves)
 ... some visualization 
 }

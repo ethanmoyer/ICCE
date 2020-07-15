@@ -2,8 +2,7 @@
 % Please edit documentation in R/preprocessData.R
 \name{betas_to_consensus_vector}
 \alias{betas_to_consensus_vector}
-\title{Converts betas matrix to consensus vectors of probes for each group 
-{VALIDATED}}
+\title{Convert betas matrix to consensus vectors of probes for each cell group}
 \usage{
 betas_to_consensus_vector(
   reference_file,
@@ -14,8 +13,6 @@ betas_to_consensus_vector(
 )
 }
 \arguments{
-\item{reference_file}{directory location of where given IDAT file is located}
-
 \item{series_matrix_file}{directory location of where given series matrix 
 file is located}
 
@@ -24,17 +21,19 @@ file is located}
 \item{group_names}{list of cell names in betas}
 
 \item{remove_names}{list of cell names in betas}
+
+\item{reference}{reference file}
 }
 \value{
-consensus vector data frame for each cell in group names
+consensus vector for each cell in group names
 }
 \description{
 This function creates a consensus vector for each group using the betas 
-matrix
+matrix. Sex cells and unwanted cell groups given the function are removed 
+first. Then the cells are fit to a bimodal distribution and finally 
+compiled into consensus vectors for each cell group.
 }
 \examples{
-consensus_vector <- betas_to_consensus_vector('~/references/
-EPIC.hg38.manifest.rds', 'GSE110554/samples_GEOLoadSeriesMatrix.rds', 
+consensus_vector <- betas_to_consensus_vector(reference, 'GSE110554/samples_GEOLoadSeriesMatrix.rds', 
 betas, c('NK', "Monocytes", ...), c('A.mix', 'B.mix', ...))
-... some visualization 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocessData.R
 \name{read_IDAT}
 \alias{read_IDAT}
-\title{Load beta data}
+\title{Load betas data}
 \usage{
 read_IDAT(IDAT_dir)
 }
@@ -10,13 +10,12 @@ read_IDAT(IDAT_dir)
 \item{IDAT_dir}{directory location of where given IDAT file is located}
 }
 \value{
-beta matrix
+betas matrix
 }
 \description{
-Using sesame and sesame, this function loads beta data using IDAT files 
-stored in a given directory
+Using sesame, this function loads betas data using IDAT files stored in a 
+given directory
 }
 \examples{
 betas <- read_IDAT('~/20191212_GEO_datasets/GSE110554')
-... some visualization 
 }

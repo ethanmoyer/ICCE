@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocessData.R
 \name{remove_cell_types}
 \alias{remove_cell_types}
-\title{Remove specific cell types from betas matrix {VALIDATED}}
+\title{Removes specific cell types from betas matrix}
 \usage{
 remove_cell_types(betas, remove_names)
 }
@@ -12,7 +12,7 @@ remove_cell_types(betas, remove_names)
 \item{remove_names}{list of cell names in betas}
 }
 \value{
-beta matrix without specified cell names
+betas matrix without specified cell names
 }
 \description{
 This function removes specified group names. Common names include MIX or 
@@ -20,5 +20,4 @@ are typically heterogeneous mixtures of cells.
 }
 \examples{
 betas <- remove_cell_types(betas, c('A.mix', 'B.mix', ...))
-... some visualization 
 }

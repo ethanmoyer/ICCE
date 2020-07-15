@@ -2,20 +2,19 @@
 % Please edit documentation in R/editTree.R
 \name{ninternal_nodes}
 \alias{ninternal_nodes}
-\title{Number of internal nodes on a tree {VALIDATED}}
+\title{Get number of internal nodes on a tree}
 \usage{
-ninternal_nodes(tree)
+ninternal_nodes(icceTree)
 }
 \arguments{
-\item{tree}{ape::phylo tree}
+\item{icceTree}{icceTree data structure}
 }
 \value{
 number of internal nodes on a given tree
 }
 \description{
-Given a tree, this function returns the number of internal nodes on tree.
+Returns the number of internal nodes on the given tree.
 }
 \examples{
-number_of_internal_nodes = ninternal_nodes(tree)
-... some visualization 
+number_of_internal_nodes = ninternal_nodes(icceTree)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/reconstructTree.R
 \name{upgma_tree}
 \alias{upgma_tree}
-\title{UPGMA tree construction {VALIDATED}}
+\title{Get UPGMA tree construction}
 \usage{
 upgma_tree(consensus_vector)
 }
@@ -15,9 +15,8 @@ ape::phylo tree constructed using UPGMA algorithm
 }
 \description{
 This function uses the UPGMA algorithm to construct a phylogenetic tree 
-using methylation data
+using methylation data.
 }
 \examples{
 tree <- upgma_tree(consensus_vector)
-... some visualization 
 }

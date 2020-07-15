@@ -4,10 +4,10 @@
 \alias{remove_branches_from_node}
 \title{Cut tree at specified node}
 \usage{
-remove_branches_from_node(tree, node)
+remove_branches_from_node(icceTree, node)
 }
 \arguments{
-\item{tree}{ape::phylo tree}
+\item{icceTree}{icceTree data structure}
 
 \item{node}{node number}
 }
@@ -21,6 +21,5 @@ stemming off of that node, thus making that node a leaf. It returns this
 altered tree.
 }
 \examples{
-tree <- remove_branches_from_node(tree, node)
-... some visualization 
+icceTree <- remove_branches_from_node(icceTree, node=8)
 }

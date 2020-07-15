@@ -2,20 +2,19 @@
 % Please edit documentation in R/editTree.R
 \name{nleaves}
 \alias{nleaves}
-\title{Number of leaves of a tree}
+\title{Get number of leaves of a tree}
 \usage{
-nleaves(tree)
+nleaves(icceTree)
 }
 \arguments{
-\item{tree}{ape::phylo tree}
+\item{icceTree}{icceTree data structure}
 }
 \value{
 number of leafs of a given tree
 }
 \description{
-Given a tree, this function returns the number of leaves on a tree.
+Returns the number of leaves on a given tree.
 }
 \examples{
-number_of_leaves = nleaves(tree)
-... some visualization 
+number_of_leaves = nleaves(icceTree)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/reconstructTree.R
 \name{reconstruct_internal_nodes}
 \alias{reconstruct_internal_nodes}
-\title{Reconstruct internal nodes {VALIDATED}}
+\title{Reconstruct internal nodes}
 \usage{
 reconstruct_internal_nodes(root, node_matrix, i)
 }
@@ -22,5 +22,4 @@ all of its internal states using Fitch's algorithm
 }
 \examples{
 reconstruct_internal_nodes(get_root(tree), node_matrix, 1)
-... some visualization 
 }

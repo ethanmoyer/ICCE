@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocessData.R
 \name{generate_bimodal_distribution}
 \alias{generate_bimodal_distribution}
-\title{Generate bimodal distribution {VALIDATED}}
+\title{Generate bimodal distribution on cell types}
 \usage{
 generate_bimodal_distribution(betas)
 }
@@ -14,9 +14,8 @@ matrix specifying mu0, mu1, sigma0, sigma1 across all cell types
 }
 \description{
 This function generates a bimodal distribution on the betas matrix data 
-within cells
+within each cell type
 }
 \examples{
 bi <- generate_bimodal_distribution(betas)
-... some visualization 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocessData.R
 \name{remove_unapplicable_probes}
 \alias{remove_unapplicable_probes}
-\title{Removes all inapplicable probes {VALIDATED}}
+\title{Removes all inapplicable probes}
 \usage{
 remove_unapplicable_probes(consensus_vector)
 }
@@ -14,10 +14,9 @@ names}
 consensus vector without inapplicable probes
 }
 \description{
-Selects and removes NA, intermediate, and zero parsimony probes from 
-consensus vectors
+Returns consensus vector with NA, intermediate, and zero parsimony probes 
+removed
 }
 \examples{
 consensus_vector <- remove_unapplicable_probes(consensus_vector)
-... some visualization 
 }

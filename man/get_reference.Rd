@@ -2,22 +2,22 @@
 % Please edit documentation in R/preprocessData.R
 \name{get_reference}
 \alias{get_reference}
-\title{Returns reference file {VALIDATED}}
+\title{Return reference data frame}
 \usage{
 get_reference(reference_file)
 }
 \arguments{
-\item{reference_file}{directory location of where given IDAT file is located}
+\item{reference_file}{file location of reference file}
 }
 \value{
-beta matrix without probes located on sex chromosomes.
+reference file
 }
 \description{
-This function returns a reference file given location. Any preprocessing 
-steps for the reference will also be added in this function.
+This function returns the contents of a given reference file as a data 
+frame. The rows of the data frame are the probe names, allowing for quick
+indexing.
 }
 \examples{
 reference <- get_reference('~/references/hg38/annotation/R/
 EPIC.hg38.manifest.rds')
-... some visualization 
 }

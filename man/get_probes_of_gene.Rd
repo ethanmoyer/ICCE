@@ -2,7 +2,7 @@
 % Please edit documentation in R/analyze.R
 \name{get_probes_of_gene}
 \alias{get_probes_of_gene}
-\title{Probes along a given gene {VALIDATED}}
+\title{Get probes along a given gene}
 \usage{
 get_probes_of_gene(reference, gene)
 }
@@ -15,9 +15,9 @@ get_probes_of_gene(reference, gene)
 list of probes along a particular gene
 }
 \description{
-This function returns a list of probes along a particular gene
+This function returns a list of probes along a particular gene using the 
+given reference file.
 }
 \examples{
 gene_probes <- get_probes_of_gene(reference, gene)
-... some visualization 
 }

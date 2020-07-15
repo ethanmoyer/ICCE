@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocessData.R
 \name{remove_NA_probes}
 \alias{remove_NA_probes}
-\title{Removes NA probes {VALIDATED}}
+\title{Removes NA probes}
 \usage{
 remove_NA_probes(consensus_vector)
 }
@@ -14,9 +14,8 @@ names}
 consensus vector without NA probes
 }
 \description{
-Selects and removes NA probes from consensus vectors
+Returns consensus vector with NA probes removed
 }
 \examples{
 consensus_vector <- remove_NA_probes(consensus_vector)
-... some visualization 
 }

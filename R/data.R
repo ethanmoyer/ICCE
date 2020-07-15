@@ -23,4 +23,4 @@
 #' times <- attr(grav, "time")
 #' phe <- grav$pheno
 #' \donttest{iplotCurves(phe, times)}
-"grav"
+#"grav"

@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocessData.R
 \name{remove_intermediate_probes}
 \alias{remove_intermediate_probes}
-\title{Removes intermediate probes {VALIDATED}}
+\title{Removes intermediate probes}
 \usage{
 remove_intermediate_probes(consensus_vector)
 }
@@ -14,7 +14,7 @@ names}
 consensus vector without intermediate probes
 }
 \description{
-Selects and removes intermediate probes from consensus vectors
+Returns consensus vector with intermediate probes removed.
 }
 \examples{
 consensus_vector <- remove_intermediate_probes(consensus_vector)

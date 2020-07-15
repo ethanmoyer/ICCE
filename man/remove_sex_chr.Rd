@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocessData.R
 \name{remove_sex_chr}
 \alias{remove_sex_chr}
-\title{Remove probes on sex chromosomes {VALIDATED}}
+\title{Removes probes on sex chromosomes}
 \usage{
 remove_sex_chr(reference, betas)
 }
@@ -12,7 +12,7 @@ remove_sex_chr(reference, betas)
 \item{betas}{matrix (rows are probe names, columns are cell names)}
 }
 \value{
-beta matrix without probes located on sex chromosomes.
+betas matrix without probes located on sex chromosomes.
 }
 \description{
 This function removes probes located on sex chromosomes because these 
@@ -20,5 +20,4 @@ probes have a disproportionate global methylation status
 }
 \examples{
 betas <- remove_sex_chr(reference, betas)
-... some visualization 
 }

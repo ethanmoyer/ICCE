@@ -2,7 +2,7 @@
 % Please edit documentation in R/reconstructTree.R
 \name{nprobes}
 \alias{nprobes}
-\title{Number of probes in data {VALIDATED}}
+\title{Get number of probes in consensus vector}
 \usage{
 nprobes(consensus_vector)
 }
@@ -14,7 +14,7 @@ names}
 number of probes
 }
 \description{
-This function returns the number of probes in the data
+Returns the number of probes in a list of consensus vectors
 }
 \examples{
 number_of_probes <- nprobes(consensus_vector)

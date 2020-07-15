@@ -4,10 +4,10 @@
 \alias{grow_off_leaf}
 \title{Grow a tree at a given leaf node}
 \usage{
-grow_off_leaf(tree, leaf, node_names)
+grow_off_leaf(icceTree, leaf, node_names)
 }
 \arguments{
-\item{tree}{ape::phylo tree}
+\item{icceTree}{icceTree data structure}
 
 \item{leaf}{node number}
 
@@ -18,11 +18,10 @@ new tree topology--two branches added to given leaf and labeled
 accordingly
 }
 \description{
-Add a pair of leaves branching off of the given leaf node for the tree. 
-Asigns the two newly added leaves labels from node_names the old leaf where 
-the two branches were add as an internal node.
+Add a pair of leaves branching off of a given leaf node on a tree. 
+Assigns the two newly added leaves labels from node_names. The old leaf 
+where the two new branches were add is also assigned as an internal node.
 }
 \examples{
-tree <- grow_off_leaf(tree, 1, c('Fibroblasts', 'Fibrocytes'))
-... some visualization 
+icceTree <- grow_off_leaf(icceTree, 1, c('Fibroblasts', 'Fibrocytes'))
 }

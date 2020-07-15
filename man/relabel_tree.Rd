@@ -4,10 +4,10 @@
 \alias{relabel_tree}
 \title{Relabel node on tree}
 \usage{
-relabel_tree(tree, n_old, n_new)
+relabel_tree(icceTree, n_old, n_new)
 }
 \arguments{
-\item{tree}{ape::phylo tree}
+\item{icceTree}{icceTree data structure}
 
 \item{n_old}{node number}
 
@@ -21,6 +21,5 @@ n_new
 Relabel node label n_old with node label n_new on tree.
 }
 \examples{
-tree <- relabel_tree(tree, 7, 10)
-... some visualization 
+icceTree <- relabel_tree(icceTree, 7, 15)
 }

@@ -2,14 +2,14 @@
 % Please edit documentation in R/preprocessData.R
 \name{create_consensus_vector}
 \alias{create_consensus_vector}
-\title{Create consensus vector of probes for each group {VALIDATED}}
+\title{Create consensus vector of probes for each group}
 \usage{
 create_consensus_vector(betas, group_names)
 }
 \arguments{
 \item{betas}{matrix (rows are cell names, columns are probe names)}
 
-\item{group_names}{list of cell names in betas}
+\item{group_names}{list of cell group names in betas matrix}
 }
 \value{
 consensus vector for each cell in group names
@@ -18,10 +18,10 @@ consensus vector for each cell in group names
 This function creates consensus vector for each group using majority ruling:
 across all probes, whichever category (methylated/unmethylated) is 
 represented in more than 2/3's of the sample will saved. Otherwise, -1 for 
-ambiguous is saved. A probabilistic model will supplement this in the future.
+ambiguous is saved. A probabilistic model will supplement this in the 
+future.
 }
 \examples{
 consensus_vector <- create_consensus_vector(betas, c('NK', "Monocytes", 
 ...))
-... some visualization 
 }

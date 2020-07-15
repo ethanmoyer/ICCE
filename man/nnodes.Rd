@@ -2,20 +2,19 @@
 % Please edit documentation in R/editTree.R
 \name{nnodes}
 \alias{nnodes}
-\title{Total number of nodes on a tree {VALIDATED}}
+\title{Get total number of nodes on a tree}
 \usage{
-nnodes(tree)
+nnodes(icceTree)
 }
 \arguments{
-\item{tree}{ape::phylo tree}
+\item{icceTree}{icceTree data structure}
 }
 \value{
 number of nodes on a tree
 }
 \description{
-Given a tree, this function returns the number of nodes on a tree.
+Returns the number of nodes on a given tree.
 }
 \examples{
-number_of_nodes = nnodes(tree)
-... some visualization 
+number_of_nodes = nnodes(icceTree)
 }

@@ -2,26 +2,21 @@
 % Please edit documentation in R/visualize.R
 \name{show_heatmap}
 \alias{show_heatmap}
-\title{Relabel node in probe-node matrix}
+\title{Display heatmap of probes {In progress}}
 \usage{
-show_heatmap()
+show_heatmap(betas, reference)
 }
 \arguments{
-\item{probe_node_matrix}{matrix storing the methylation status across all
-probes and nodes on a tree}
+\item{betas}{betas}
 
-\item{n_old}{node number}
-
-\item{n_new}{node number}
+\item{reference}{reference}
 }
 \value{
-relabeled probe_node_matrix with node label n_old with node label
-n_new
+
 }
 \description{
-Relabel node label n_old with node label n_new in probe-node matrix.
+This is in progress
 }
 \examples{
-probe_node_matrix <- relabel_node_matrix(probe_node_matrix, 7, 10)
-... some visualization 
+head_map <- show_heatmap()
 }

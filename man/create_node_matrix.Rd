@@ -2,7 +2,7 @@
 % Please edit documentation in R/editTree.R
 \name{create_node_matrix}
 \alias{create_node_matrix}
-\title{Node matrix used for tree walking {VALIDATED}}
+\title{Create node matrix used for tree walking functions}
 \usage{
 create_node_matrix(tree)
 }
@@ -10,14 +10,13 @@ create_node_matrix(tree)
 \item{tree}{ape::phylo tree}
 }
 \value{
-node matrix with one column for ancestors and another for 
+node matrix with one column for ancestors and another column for 
 descendants
 }
 \description{
 Returns a matrix which tracks where recursive functions are in a tree 
-structure. This is past to most recursive functions in the pipeline.
+structure. This is passed to most recursive functions in this package.
 }
 \examples{
 node_matrix <- create_node_matrix(tree)
-... some visualization 
 }

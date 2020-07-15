@@ -2,28 +2,30 @@
 % Please edit documentation in R/editTree.R
 \name{add_data}
 \alias{add_data}
-\title{Add to probe-node matrix at a new node}
+\title{Set data on either probe-node matrix at a new or existing node}
 \usage{
-add_data(probe_node_matrix, n_new., data)
+add_data(icceTree, n_new, d, matrix = 0)
 }
 \arguments{
-\item{probe_node_matrix}{matrix storing the methylation status across all
-probes and nodes on a tree}
-
-\item{data}{column matrix of methylation status for a node across many 
-probes}
+\item{icceTree}{icceTree data structure}
 
 \item{n_new}{node number}
+
+\item{d}{column matrix of methylation status for a node across many 
+probes}
+
+\item{matrix}{numerical value indicating which probe-node matrix
+to add data to (0 == methyl states, 1 == p-values)}
 }
 \value{
-probe-node matrix with data stored at node n_new
+probe-node matrix with data d stored at node n_new
 }
 \description{
-At a given node, this function adds data to the probe-node matrix at node 
-n_new. Make sure that the sizes of data and the probe-node matrix are 
+At a given node n_new, this function adds data d to the either the methyl 
+probe-node matrix or p-value probe-node matrix (depending on the matrix 
+parameter). Make sure that the sizes of d and the probe-node matrix are  
 compatible before calling this function.
 }
 \examples{
-tree <- add_data(probe_node_matrix, 12, probe_node_matrix['6'])
-... some visualization 
+tree <- add_data(icceTree, 12, probe_node_matrix['6'], matrix=0)
 }

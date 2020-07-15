@@ -2,20 +2,20 @@
 % Please edit documentation in R/analyze.R
 \name{track_gene}
 \alias{track_gene}
-\title{Proportion of probes methylated, unmethylated, ambiguous at each node 
-across a tree {VALIDATED}}
+\title{Get proportion of probes methylated, unmethylated, ambiguous at each node 
+across a tree}
 \usage{
-track_gene(tree, probe_node_matrix, reference, gene)
+track_gene(icceTree, reference, gene)
 }
 \arguments{
-\item{tree}{ape::phylo tree}
-
-\item{probe_node_matrix}{matrix storing the methylation status across all
-probes and nodes on a tree}
+\item{icceTree}{icceTree data structure}
 
 \item{reference}{reference file}
 
 \item{gene}{gene name}
+
+\item{probe_node_matrix}{matrix storing the methylation status across all
+probes and nodes on a tree}
 }
 \value{
 a structure composed of two lists that contain methylation state 
@@ -26,8 +26,7 @@ This function returns the proportion of each probes that are methylated,
 unmethylated, ambiguous at each node across a tree.
 }
 \examples{
-gene_information <- track_gene(tree, probe_node_matrix, reference, 'CD81')
+gene_information <- track_gene(icceTree, reference, 'CD81')
 thermo_prop_internal_nodes = gene_information$thermo_prop_internal_nodes
 thermo_prop_leaves = gene_information$thermo_prop_leaves
-... some visualization 
 }
