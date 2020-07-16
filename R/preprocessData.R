@@ -178,7 +178,7 @@ fit_betas_to_distribution_p <- function(betas, bi) {
 }
 
 
-create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigma=0.1) {
+create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigma=0.25 {
 	consensus_state <- c()
 	consensus_p <- c()
 	# For each cell type
@@ -188,9 +188,10 @@ create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigm
 
 		# For each probe
 		for (j in 1:ncol(group_betas)) {
-			if (any(is.na(group_betas[, j]))) {
-				S_state[j] = NA
-				S_p[j] = NA
+			# Penalty for the case when there are only NAs at a probe
+			if (all(is.na(group_betas[, j]))) {
+				S_state[j] = round(runif(1))
+				S_p[j] = 1
 				next
 			}
 			
@@ -198,6 +199,11 @@ create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigm
 			# Calculating P(B | m = 0)
 			# P(B | m = 0) = (B_1 | m = 0) * ... * (B_N | m = 0)
 			for (k in 1:nrow(group_betas)) {
+				# Add a penalty based on number of NAs present
+				if (is.na(group_betas[k, j])) {
+					next
+				}
+
 				# P(B_i | m = 0) ~ N(.1, .1)
 				prod_0 = prod_0 * (1 - pnorm(group_betas[k, j], mu0, sigma))
 			}
@@ -206,10 +212,15 @@ create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigm
 			# Calculating P(B | m = 1)
 			# P(B | m = 1) = (B_1 | m = 1) * ... * (B_N | m = 1)
 			for (k in 1:nrow(group_betas)) {
+				# Add a penalty based on number of NAs present
+				if (is.na(group_betas[k, j])) {
+					next
+				}
+
 				# P(B_i | m = 1) ~ N(.9, .1)
 				prod_1 = prod_1 * pnorm(group_betas[k, j], mu1, sigma)
 			}
-			# Add a penalty
+			# Add a penalty for when there is a large discrepancy in beta values
 			if (sd(group_betas[, j]) > 0.15) {}
 			# cg00007420
 			# arg max (P(B | m = 0), P(B | m = 1))
