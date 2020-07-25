@@ -75,6 +75,7 @@ generate_branch_changes <- function(icceTree) {
 #' @return list of differentially methylated genes for each node
 #' @examples
 #' relevant_genes <- get_relevant_genes(icceTree, relevant_probes, reference)
+#' any(grepl(gene, bcells))... can be used, create function for this
 #' @export
 get_relevant_genes <- function(icceTree, relevant_probes, reference) {
 	tree <- icceTree$tree

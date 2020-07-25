@@ -30,7 +30,7 @@ relabel_node_matrix <- function(icceTree, n_old, n_new, matrix=2) {
 #'
 #' Relabel node label n_old with node label n_new on tree.
 #'
-#' @param icceTree icceTree data structure
+#' @param tree ape::phylo tree data structure
 #' @param n_old node number
 #' @param n_new node number
 #'
@@ -39,69 +39,147 @@ relabel_node_matrix <- function(icceTree, n_old, n_new, matrix=2) {
 #' @examples
 #' icceTree <- relabel_tree(icceTree, 7, 15)
 #' @export
-relabel_tree <- function(icceTree, n_old, n_new) {
-	icceTree$tree$edge[icceTree$tree$edge == n_old] = n_new
-	return(icceTree)
+relabel_tree <- function(tree, n_old, n_new) {
+	edges <- tree$edge
+	edges[edges == n_old] = n_new
+	tree$edge <- edges
+	return(tree)
 }
 
 #' Get the leaves of a tree 
 #'
-#' Given a tree, this function returns its leaves.
+#' Given an ape::phylo tree object, this function returns its leaves of the 
+#' tree.
 #'
-#' @param icceTree icceTree data structure
+#' @param tree ape::phylo tree data structure
 #'
 #' @return a list of nodes representing the leaves of the tree
 #' @examples
-#' leaves <- get_leaves(icceTree)
+#' leaves <- get_leaves(tree)
 #' @export
-get_leaves <- function(icceTree) {
-	ancestors = icceTree$tree$edge[, 1]
-	descendants = icceTree$tree$edge[, 2]
+get_leaves <- function(tree) {
+	ancestors = tree$edge[, 1]
+	descendants = tree$edge[, 2]
 
 	leaves = descendants[!(descendants %in% ancestors)]
 	return(leaves)
+}
+
+#' Get all of the nodes of a tree 
+#'
+#' Given an ape::phylo tree object, this function returns all of the nodes of 
+#' the tree.
+#'
+#' @param tree ape::phylo tree data structure
+#'
+#' @return a list of nodes representing the nodes of the tree
+#' @examples
+#' nodes <- get_nodes(tree)
+#' @export
+get_nodes <- function(tree) {
+
+	return(unique(c(tree$edge)))
+
+}
+
+#' Get all of the internal nodes of a tree 
+#'
+#' Given an ape::phylo tree object, this function returns all of the internal 
+#' nodes of the tree.
+#'
+#' @param tree ape::phylo tree data structure
+#'
+#' @return a list of nodes representing the internal nodes of the tree
+#' @examples
+#' internal_nodes <- get_internal_nodes(tree)
+#' @export
+get_internal_nodes <- function(tree) {
+	leaves = get_leaves(tree)
+	nodes = get_nodes(tree)
+	return(nodes[!(nodes %in% leaves)])
+}
+
+#' Get the descendant leaves of a tree at a particular node
+#'
+#' Given an icceTree object and an internal node, this function returns the 
+#' descendant leaves of that node.
+#'
+#' @param icceTree icceTree data structure
+#'
+#' @return a list of the descendant leaves of the given node
+#' @examples
+#' descendants <- get_descendant_leaves(icceTree, node)
+#' @export
+get_descendant_leaves <- function(icceTree, node){
+
+	icceTree_ <- remove_branches_from_node(icceTree, node)
+
+	all_leaves = get_leaves(icceTree)
+
+	cut_leaves = get_leaves(icceTree_)
+
+	return(all_leaves[!(all_leaves %in% cut_leaves) & all_leaves != node])
 }
 
 #' Get number of leaves of a tree 
 #'
 #' Returns the number of leaves on a given tree.
 #'
-#' @param icceTree icceTree data structure
+#' @param tree ape::phylo tree
 #'
 #' @return number of leafs of a given tree
 #' @examples
 #' number_of_leaves = nleaves(icceTree)
 #' @export
-nleaves <- function(icceTree) {
-	return(length(get_leaves(icceTree$tree)))
+nleaves <- function(tree) {
+	return(length(get_leaves(tree)))
 }
 
 #' Get total number of nodes on a tree
 #'
 #' Returns the number of nodes on a given tree.
 #'
-#' @param icceTree icceTree data structure
+#' @param tree ape::phylo tree
 #'
 #' @return number of nodes on a tree
 #' @examples
 #' number_of_nodes = nnodes(icceTree)
 #' @export
-nnodes <- function(icceTree) {
-	return(nrow(icceTree$tree$edge))
+nnodes <- function(tree) {
+	return(nrow(tree$edge))
 }
 
 #' Get number of internal nodes on a tree
 #'
 #' Returns the number of internal nodes on the given tree.
 #'
-#' @param icceTree icceTree data structure
+#' @param tree ape::phylo tree
 #'
 #' @return number of internal nodes on a given tree
 #' @examples
 #' number_of_internal_nodes = ninternal_nodes(icceTree)
 #' @export
-ninternal_nodes <- function(icceTree) {
-	return(nrow(icceTree$tree$edge) - nleaves(icceTree$tree))
+ninternal_nodes <- function(tree) {
+	return(length(get_internal_nodes(tree)))
+}
+
+#' Get root of a tree 
+#'
+#' Returns the root of a given tree structure.
+#' 
+#' @param tree ape::phylo tree data structure
+#'
+#' @return node corresponding the the root of the tree
+#' @examples
+#' root <- get_root(icceTree)
+#' @export
+get_root <- function(tree) {
+	ancestor = tree$edge[, 1]
+	descendant = tree$edge[, 2]
+
+	root = ancestor[!(ancestor %in% descendant)]
+
+	return(unique(root))
 }
 
 #' Grow a tree at a given leaf node 
@@ -169,27 +247,6 @@ add_data <- function(icceTree, n_new, d, matrix=0) {
 	}
 	
 	return(probe_node_matrix)
-}
-
-#' Get root of a tree 
-#'
-#' Returns the root of a given tree structure.
-#' 
-#' @param icceTree icceTree data structure
-#'
-#' @return node corresponding the the root of the tree
-#' @examples
-#' root <- get_root(icceTree)
-#' @export
-get_root <- function(icceTree) {
-	tree <- icceTree$tree
-
-	ancestor = tree$edge[, 1]
-	descendant = tree$edge[, 2]
-
-	root = ancestor[!(ancestor %in% descendant)]
-
-	return(unique(root))
 }
 
 #' Create node matrix used for tree walking functions

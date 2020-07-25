@@ -178,11 +178,13 @@ fit_betas_to_distribution_p <- function(betas, bi) {
 }
 
 
-create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigma=0.25 {
+create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigma=0.25) {
 	consensus_state <- c()
 	consensus_p <- c()
 	# For each cell type
 	for (i in 1:length(group_names)) {
+		S_state = c()
+		S_p = c()
 		name = group_names[i]
 		group_betas = betas[grepl(name, rownames(betas)), ]
 
@@ -221,7 +223,7 @@ create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigm
 				prod_1 = prod_1 * pnorm(group_betas[k, j], mu1, sigma)
 			}
 			# Add a penalty for when there is a large discrepancy in beta values
-			if (sd(group_betas[, j]) > 0.15) {}
+			#if (sd(group_betas[, j]) > 0.15) {}
 			# cg00007420
 			# arg max (P(B | m = 0), P(B | m = 1))
 			prob = c(prod_0, prod_1)
@@ -235,7 +237,7 @@ create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigm
 		consensus_p[[name]] = S_p
 	} 
 
-	return(c(consensus_state=consensus_state, consensus_p=consensus_p))
+	return(list(consensus_state=data.frame(consensus_state), consensus_p=data.frame(consensus_p)))
 }
 
 
@@ -274,53 +276,6 @@ create_consensus_vector <- function(betas, group_names) {
 	} 
 
 	return(data.frame(consensus_vector))
-}
-
-#' Convert betas matrix to consensus vectors of probes for each cell group 
-#'
-#' This function creates a consensus vector for each group using the betas 
-#' matrix. Sex cells and unwanted cell groups given the function are removed 
-#' first. Then the cells are fit to a bimodal distribution and finally 
-#' compiled into consensus vectors for each cell group.
-#' 
-#' @param reference reference file
-#' @param series_matrix_file directory location of where given series matrix 
-#' file is located
-#' @param betas matrix (rows are cell names, columns are probe names)
-#' @param group_names list of cell names in betas
-#' @param remove_names list of cell names in betas
-#'
-#' @return consensus vector for each cell in group names
-#' @examples
-#' consensus_vector <- betas_to_consensus_vector(reference, 'GSE110554/samples_GEOLoadSeriesMatrix.rds', 
-#' betas, c('NK', "Monocytes", ...), c('A.mix', 'B.mix', ...))
-#' @export
-betas_to_consensus_vector <- function(reference_file, series_matrix_file, betas, group_names, remove_names) {
-
-	betas <- remove_sex_chr(reference_file, betas)
-	save_data(betas, 'betas_raw')
-
-	series_matrix <- readRDS(series_matrix_file)
-
-	betas = t(betas)
-	rownames(betas) <- series_matrix$title
-
-	betas <- remove_cell_types(betas, remove_names)
-	save_data(betas, 'betas_selected_cells')
-
-	bi <- generate_bimodal_distribution(betas)
-	save_data(bi, 'bi_distribution')
-
-	betas <- fit_betas_to_distribution(betas, bi)
-	save_data(betas, 'betas_fit_to_distribution')
-
-	consensus_vector <- create_consensus_vector(betas, group_names)
-	names(consensus_vector) <- c('NK.cells', 'Monocytes', 'Tc.cells', 'Neutrophils','Th.cells', 'B.cells')
-	save_data(consensus_vector, 'consensus_vector')
-
-	consensus_vector <- remove_unapplicable_probes(consensus_vector)
-
-	return(consensus_vector)
 }
 
 #' Removes NA probes
@@ -446,5 +401,66 @@ generate_p_values_0 <- function(x, mu0, mu1, nsamples=10) {
 	list(BT=BT, BL=BL[ind], BS=BS)
 }
 
+#' Convert betas matrix to consensus vectors of probes for each cell group 
+#'
+#' This function creates a consensus vector for each group using the betas 
+#' matrix. Sex cells and unwanted cell groups given the function are removed 
+#' first. Then the cells are fit to a bimodal distribution and finally 
+#' compiled into consensus vectors for each cell group.
+#' 
+#' @param reference reference file
+#' @param series_matrix_file directory location of where given series matrix 
+#' file is located
+#' @param betas matrix (rows are cell names, columns are probe names)
+#' @param group_names list of cell names in betas
+#' @param remove_names list of cell names in betas
+#'
+#' @return consensus vector for each cell in group names
+#' @examples
+#' consensus_vector <- betas_to_consensus_vector(reference, 'GSE110554/samples_GEOLoadSeriesMatrix.rds', 
+#' betas, c('NK', "Monocytes", ...), c('A.mix', 'B.mix', ...))
+#' @export
+group_names = c("NK", "Mono", "Tc", "Neu", "Th", "B")
+remove_names = c("PCA0612", "WB1148", "A2.mix", "B6.mix", "PCA1547", "WB1147", "B3.mix", "B2.mix", "A4.mix", "B4.mix", "A3.mix", "ST2007", "B5.mix", "B1.mix", "A5.mix", "WB1145", "A6.mix", "A1.mix")
+
+betas_to_consensus_vector <- function(reference, series_matrix_file, betas, group_names, remove_names) {
+
+	betas <- remove_sex_chr(reference, betas)
+	save_data(betas, 'betas_no_XY')
+
+	series_matrix <- readRDS(series_matrix_file)
+
+	betas = t(betas)
+	rownames(betas) <- series_matrix$title
+
+	betas <- remove_cell_types(betas, remove_names)
+	save_data(betas, 'betas_selected_cells')
+
+	consensus_info <- create_consensus_vector_p(betas, group_names)
+	consensus_state <- consensus_info$consensus_state
+	consensus_p <- consensus_info$consensus_p
+
+	#bi <- generate_bimodal_distribution(betas)
+	#save_data(bi, 'bi_distribution')
+
+	#betas <- fit_betas_to_distribution(betas, bi)
+	#save_data(betas, 'betas_fit_to_distribution')
+
+	#consensus_vector <- create_consensus_vector(betas, group_names)
+	names(consensus_state) <- c('NK.cells', 'Monocytes', 'Tc.cells', 'Neutrophils','Th.cells', 'B.cells')
+	rownames(consensus_state) = colnames(betas)
+	
+
+	names(consensus_p) <- c('NK.cells', 'Monocytes', 'Tc.cells', 'Neutrophils','Th.cells', 'B.cells')
+	rownames(consensus_p) = colnames(betas)
+	
+	consensus_state <- remove_unapplicable_probes(consensus_state)
+	consensus_p <- consensus_p[(rownames(consensus_p) %in% rownames(consensus_state)), ]
+
+	save_data(consensus_state, 'consensus_state')
+	save_data(consensus_p, 'consensus_p')
+
+	return(list(consensus_state=consensus_state, consensus_p=consensus_p)
+}
 
 
