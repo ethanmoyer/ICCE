@@ -157,11 +157,10 @@ reconstruct_internal_nodes_p <- function(tree, probe_node_matrix, probe_node_mat
 #' probe_vector <- simulate_fitch_info$m
 #' probe_vector_p <- simulate_fitch_info$p 
 #' @export
-simulate_fitch <- function(tree, probe_node_matrix, probe_node_matrix_p, n = 1000) {
+simulate_fitch <- function(tree, consensus_state, probe_node_matrix, probe_node_matrix_p, n = 1000) {
     probe_node_matrix_ <- probe_node_matrix
-
-    m <- probe_node_matrix_
-    p <- probe_node_matrix_
+    m <- initialize_probe_node_matrix(consensus_state, tree)
+    p <- probe_node_matrix_p
     for (k in 1:n) {
         for (i in 1:nrow(probe_node_matrix)) {
             for (j in get_leaves(tree)) {
@@ -288,8 +287,8 @@ nprobes <- function(consensus_state) {
 #' This function fully generates the probe-node matrix with a given 
 #' tree. It performs ancestral tree reconstruction using Fitch's algorithm.
 #' 
-#' @param consensus_state consensus vector data frame for each cell in group 
-#' names
+#' @param consensus_state consensus methylation call vector data frame for each cell in group names
+#' @param consensus_p consensus p-value vector data frame for each cell in group names
 #' @param tree ape::phylo tree
 #'
 #' @return prone-node matrix storing the methylation status across all probes 
@@ -299,7 +298,7 @@ nprobes <- function(consensus_state) {
 #' tree <- icceTree$tree
 #' probe_node_matrix <- icceTree$probe_node_matrix
 #' @export
-build_icceTree <- function(consensus_state, icce) {
+build_icceTree <- function(consensus_state, consensus_p, tree) {
     probe_node_matrix <<- initialize_probe_node_matrix(consensus_state, tree)
 
     tree_root <<- get_root(tree)
@@ -310,8 +309,6 @@ build_icceTree <- function(consensus_state, icce) {
     P_ancestor <<- P_edges[, 1]
     P_descendant <<- P_edges[, 2]
 
-    # Incorporating p-value combining
-    # pchisq((sum(log(p))*-2), df=length(p)*2, lower.tail=F)
     reconstruct_internal_nodes(tree_root, create_node_matrix(tree), 1)
 
     inherit_parental_state(tree_root, create_node_matrix(tree), 1)
@@ -319,12 +316,16 @@ build_icceTree <- function(consensus_state, icce) {
     probe_node_matrix_copy <<- probe_node_matrix
 
     probe_node_matrix_p <<- probe_node_matrix
-    for (i in get_leaves(tree)) {
-        probe_node_matrix_p[toString(i)] = consensus_p[i]
+    for (i in get_nodes(tree)) {
+        if (i %in% get_leaves(tree)) {
+            probe_node_matrix_p[toString(i)] = consensus_p[i]
+        } else {
+            probe_node_matrix_p[toString(i)] = integer(nrow(consensus_p))
+        }
     }
 
-    probe_node_matrix_p <- reconstruct_internal_nodes_p(initialize_probe_node_matrix(consensus_state, tree), probe_node_matrix_p)
+    probe_node_matrix_p <- reconstruct_internal_nodes_p(tree, probe_node_matrix_copy, probe_node_matrix_p)
 
-    return(icce_tree(probe_node_matrix, probe_node_matrix_p, tree))
+    return(icce_tree(probe_node_matrix_copy, probe_node_matrix_p, tree))
 }
 

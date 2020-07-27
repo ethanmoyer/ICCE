@@ -178,7 +178,7 @@ fit_betas_to_distribution_p <- function(betas, bi) {
 }
 
 
-create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigma=0.25) {
+create_consensus_vector_p <- function(betas, group_names, mu0=0.1, mu1=0.9, sigma=0.5) {
 	consensus_state <- c()
 	consensus_p <- c()
 	# For each cell type

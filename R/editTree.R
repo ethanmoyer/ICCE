@@ -77,9 +77,7 @@ get_leaves <- function(tree) {
 #' nodes <- get_nodes(tree)
 #' @export
 get_nodes <- function(tree) {
-
 	return(unique(c(tree$edge)))
-
 }
 
 #' Get all of the internal nodes of a tree 
