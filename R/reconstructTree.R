@@ -116,42 +116,18 @@ inherit_parental_state <- function(root, node_matrix, i) {
     }
 }
 
-#' Reconstruct internal nodes p-values
-#'
-#' This function will loop through all of the internal nodes and reconstruct
-#' all of its internal p-values using a simulation of probabilities
-#' 
-#' @param probe_node_matrix probe-node matrix of methylation calls
-#' @param probe_node_matrix_p probe-node matrix of p-values
-#'
-#' @return probe_node_matrix_p probe-node matrix of p-values
-#' @examples
-#' probe_node_matrix_p <- reconstruct_internal_nodes_p(probe_node_matrix, 
-#' probe_node_matrix_p)
-#' @export
-reconstruct_internal_nodes_p <- function(tree, probe_node_matrix, probe_node_matrix_p) {
-    simulate_fitch_info = simulate_fitch(tree, probe_node_matrix, probe_node_matrix_p)
-    for (i in get_internal_nodes(tree)) {
-        
-        probe_node_matrix[toString(i)] <- simulate_fitch_info$m
-        probe_node_matrix_p[toString(i)] <- simulate_fitch_info$p
-
-    }
-
-}
-
-#' Run a simulation of Fitch's algorithm for a particular node
+#' Run a simulation of Fitch's algorithm for all nodes
 #'
 #' This function runs n simulations in which is randomizes methylation calls 
 #' of probes according to their p-value and calls Fitch's algorithm. It 
-#' assigns the p-value of the given node based on the number of observations 
-#' in n simulations.
+#' assigns the p-value of all internal nodes based on the number of 
+#' observations of methylation in n simulations.
 #' 
 #' @param probe_node_matrix probe-node matrix of methylation calls
 #' @param probe_node_matrix_p probe-node matrix of p-values
 #'
-#' @return m probe vector of methylation calls for a particular node
-#' @return p probe vector of p-values for a particular node
+#' @return m probe vector of methylation calls for all node
+#' @return p probe vector of p-values for all node
 #' @examples
 #' simulate_fitch_info <- reconstruct_internal_nodes_p(probe_node_matrix, 
 #' probe_vector <- simulate_fitch_info$m
@@ -324,8 +300,10 @@ build_icceTree <- function(consensus_state, consensus_p, tree) {
         }
     }
 
-    probe_node_matrix_p <- reconstruct_internal_nodes_p(tree, probe_node_matrix_copy, probe_node_matrix_p)
+    simulate_fitch_info <- simulate_fitch(tree, consensus_state, probe_node_matrix_copy, probe_node_matrix_p)
+    probe_node_matrix <- simulate_fitch_info$m
+    probe_node_matrix_p <- simulate_fitch_info$p
 
-    return(icce_tree(probe_node_matrix_copy, probe_node_matrix_p, tree))
+    return(icce_tree(probe_node_matrix, probe_node_matrix_p, tree))
 }
 
