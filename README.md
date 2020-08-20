@@ -9,6 +9,8 @@ library(BiocManager)
 install("ethanmoyer/icce")
 ```
 
+Just clone to install for now.
+
 ICCE can process Illumina Infinium DNA methylation data. It currently only supports the EPIC Platform. 
 
 ## Install ICCE
