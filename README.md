@@ -1,6 +1,8 @@
 # ICCE - Iterative Construction of Cyto-epigenetic Evolution
 
-To install from github,
+NEED TO UPDATE
+
+To install from github {Not currently implemented},
 ```R
 install.packages("BiocManager")
 library(BiocManager)
